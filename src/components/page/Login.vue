@@ -1,5 +1,5 @@
 <template>
-    <div class="login-wrap">
+    <!-- <div class="login-wrap">
         <div class="ms-login">
             <div class="ms-title">Apollo仓储管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
@@ -10,7 +10,6 @@
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input type="password" placeholder="password" v-model="param.password">
-                        <!-- @keyup.enter.native="submitForm()" -->
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
@@ -30,19 +29,74 @@
                     </el-select>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
+                    <el-button type="primary" v-loading="loading" @click="submitForm()">登录</el-button>
                 </div>
-                <!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
             </el-form>
         </div>
-    </div>
+    </div>-->
+    <section>
+        <div class="full-page-bg">
+            <h1>斑马酒仓WMS管理系统</h1>
+        </div>
+        <div class="containers">
+            <div class="left-logo">
+                <img src="../../assets/logo/200-200.png" alt />
+            </div>
+            <div id="login-box">
+                <div class="login-header">用户登录</div>
+                <el-form
+                    :model="param"
+                    :rules="rules"
+                    ref="login"
+                    label-width="0px"
+                    class="login-form"
+                >
+                    <el-form-item prop="account">
+                        <el-input v-model="param.account" placeholder="请输入用户名">
+                            <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input type="password" placeholder="password" v-model="param.password">
+                            <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item prop="code">
+                        <el-input v-model="param.code" placeholder="请输入企业标识码">
+                            <el-button slot="prepend" icon="el-icon-key"></el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item prop="companyRoleId">
+                        <el-select v-model="param.companyRoleId" clearable placeholder="请选择角色">
+                            <el-option
+                                v-for="item in roleList"
+                                :key="item.id"
+                                :label="item.companyRoleName"
+                                :value="item.id"
+                            ></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <div class="login-btn">
+                        <el-button type="primary" v-loading="loading" @click="submitForm()">登录</el-button>
+                    </div>
+                </el-form>
+                <div class="login-footer">
+                    <small>
+                        Copyright © 2019
+                        <i>Apollo-wms.com</i> All rights reserved
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script>
-import { login, getRoles } from '../../api/index.js';
+import { login, getRoles, getCompanyType } from '../../api/index.js';
 export default {
     data: function() {
         return {
+            loading: false,
             roleList: [], //用户角色列表
             param: {
                 account: '',
@@ -62,18 +116,29 @@ export default {
         submitForm() {
             this.$refs.login.validate(valid => {
                 if (valid) {
+                    this.loading = true;
                     let param = Object.assign(this.param);
                     login(param)
-                        .then(res => {
-                            console.log('登录成功', res);
-                            // this.$message.success('登录成功');
-                            // localStorage.setItem('ms_username', this.param.username);
-                            // this.$router.push('/');
+                        .then(data => {
+                            getCompanyType()
+                                .then(res => {
+                                    console.log(res);
+                                    this.$message.success('登录成功');
+                                    sessionStorage.setItem('bm_user', JSON.stringify(data.user));
+                                    sessionStorage.setItem('bm_menu', JSON.stringify(data.menu));
+                                    sessionStorage.setItem('bm_roleId', JSON.stringify(data.roleId));
+                                    this.loading = false;
+                                    this.$router.push('/');
+                                })
+                                .catch(err => {
+                                    this.loading = false;
+                                });
                         })
                         .catch(err => {
-                            console.log('登录失败', err);
+                            this.loading = false;
                         });
                 } else {
+                    this.loading = false;
                     this.$message.error('请完善登录信息！');
                     return false;
                 }
@@ -94,45 +159,79 @@ export default {
 </script>
 
 <style scoped>
-.login-wrap {
-    position: relative;
+.full-page-bg {
+    position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url(../../assets/img/login-bg.jpg);
-    background-size: 100%;
+    z-index: -100;
+    background: url('../../assets/logo/bg5.jpg') no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.ms-title {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
-    font-size: 20px;
-    color: #fff;
-    border-bottom: 1px solid #ddd;
+.full-page-bg h1 {
+    margin-bottom: 500px;
+    color: white;
+    font-size: 38px;
 }
-.ms-login {
+.containers {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 350px;
-    margin: -190px 0 0 -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    overflow: hidden;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 800px;
+    height: 400px;
+    background: white;
 }
-.ms-content {
-    padding: 30px 30px;
+.left-logo {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background: rgb(24, 144, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#login-box {
+    width: 50%;
+    height: 100%;
+    float: right;
+}
+.login-header,
+.login-footer {
+    width: 100%;
+    background: rgb(242, 242, 242);
+    text-align: center;
+}
+.login-header {
+    height: 40px;
+    line-height: 40px;
+    color: rgb(24, 144, 255);
+    font-size: 20px;
+}
+.login-footer {
+    height: 40px;
+    line-height: 40px;
+    color: gray;
+}
+.login-form {
+    padding: 20px 50px;
+    width: calc(100% - 100px);
+    height: calc(100% - 120px);
+}
+.el-form-item{
+    margin-bottom: 30px!important;
+}
+.el-select{
+    display: block!important;
 }
 .login-btn {
     text-align: center;
 }
 .login-btn button {
     width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
-}
-.login-tips {
-    font-size: 12px;
-    line-height: 30px;
-    color: #fff;
 }
 </style>

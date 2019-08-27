@@ -5,7 +5,7 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">后台管理系统</div>
+        <div class="logo">仓储后台管理系统</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
@@ -38,12 +38,12 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <a href="http://blog.gdfengshuo.com/about/" target="_blank">
+                        <!-- <a href="http://blog.gdfengshuo.com/about/" target="_blank">
                             <el-dropdown-item>关于作者</el-dropdown-item>
                         </a>
                         <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
                             <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
+                        </a>-->
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -53,27 +53,34 @@
 </template>
 <script>
 import bus from '../common/bus';
+import { loginOut } from '../../api/index';
 export default {
     data() {
         return {
             collapse: false,
             fullscreen: false,
-            name: 'linxin',
+            name: 'admin',
             message: 2
         };
     },
     computed: {
         username() {
-            let username = localStorage.getItem('ms_username');
-            return username ? username : this.name;
+            let bm_user = sessionStorage.getItem('bm_user');
+            return bm_user ? JSON.parse(bm_user).name : this.name;
         }
     },
     methods: {
         // 用户名下拉菜单选择事件
         handleCommand(command) {
             if (command == 'loginout') {
-                localStorage.removeItem('ms_username');
-                this.$router.push('/login');
+                loginOut()
+                    .then(data => {
+                        sessionStorage.removeItem('bm_user');
+                        sessionStorage.removeItem('bm_menu');
+                        sessionStorage.removeItem('bm_roleId');
+                        this.$router.push('/login');
+                    })
+                    .catch(err => {});
             }
         },
         // 侧边栏折叠
@@ -110,7 +117,7 @@ export default {
         }
     },
     mounted() {
-        if (document.body.clientWidth < 1500) {
+        if (document.body.clientWidth < 1500) {//屏幕宽度小于1500px自动折叠菜单栏
             this.collapseChage();
         }
     }

@@ -222,11 +222,11 @@ export default {
     width: calc(100% - 100px);
     height: calc(100% - 120px);
 }
-.el-form-item{
-    margin-bottom: 30px!important;
+.el-form-item {
+    margin-bottom: 30px !important;
 }
-.el-select{
-    display: block!important;
+.el-select {
+    display: block !important;
 }
 .login-btn {
     text-align: center;

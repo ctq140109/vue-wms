@@ -10,7 +10,7 @@
             unique-opened
             router
         >
-            <template v-for="item in items">
+            <template v-for="item in menu">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             collapse: false,
-            items: [
+            menu: [
                 {
                     icon: 'el-icon-lx-home',
                     index: 'dashboard',
@@ -153,6 +153,127 @@ export default {
                     icon: 'el-icon-lx-redpacket_fill',
                     index: '/donate',
                     title: '支持作者'
+                }
+            ],
+            items: [
+                {
+                    id: 1,
+                    menuName: '系统设置',
+                    urlPath: 'admin',
+                    imageStroePath: 'ww',
+                    parentId: 0,
+                    orderNumber: 0,
+                    state: true,
+                    createTime: '2019-03-11 04:46:45',
+                    cancelTime: null,
+                    description: null,
+                    childMenus: [
+                        {
+                            id: 5,
+                            menuName: '企业角色',
+                            urlPath: 'companyRole-manage',
+                            imageStroePath: 'w',
+                            parentId: 1,
+                            orderNumber: 0,
+                            state: true,
+                            createTime: '2019-03-18 08:33:38',
+                            cancelTime: null,
+                            description: null,
+                            childMenus: []
+                        },
+                        {
+                            id: 6,
+                            menuName: '企业管理',
+                            urlPath: 'company-manage',
+                            imageStroePath: 's',
+                            parentId: 1,
+                            orderNumber: 0,
+                            state: true,
+                            createTime: null,
+                            cancelTime: null,
+                            description: null,
+                            childMenus: []
+                        },
+                        {
+                            id: 7,
+                            menuName: '员工角色',
+                            urlPath: 'staffRole-manage',
+                            imageStroePath: null,
+                            parentId: 1,
+                            orderNumber: 1,
+                            state: true,
+                            createTime: null,
+                            cancelTime: null,
+                            description: null,
+                            childMenus: []
+                        },
+                        {
+                            id: 8,
+                            menuName: '员工管理',
+                            urlPath: 'staff-manage',
+                            imageStroePath: null,
+                            parentId: 1,
+                            orderNumber: 2,
+                            state: true,
+                            createTime: null,
+                            cancelTime: null,
+                            description: null,
+                            childMenus: []
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    menuName: '业务设置',
+                    urlPath: 'admin',
+                    imageStroePath: 'f',
+                    parentId: 0,
+                    orderNumber: 1,
+                    state: true,
+                    createTime: '2019-03-11 04:51:36',
+                    cancelTime: null,
+                    description: null,
+                    childMenus: [
+                        {
+                            id: 17,
+                            menuName: '货物品名管理',
+                            urlPath: 'goods-manage',
+                            imageStroePath: null,
+                            parentId: 2,
+                            orderNumber: 11,
+                            state: true,
+                            createTime: null,
+                            cancelTime: null,
+                            description: null,
+                            childMenus: []
+                        },
+                        {
+                            id: 18,
+                            menuName: '单位类型管理',
+                            urlPath: 'unitType-manage',
+                            imageStroePath: '',
+                            parentId: 2,
+                            orderNumber: 12,
+                            state: true,
+                            createTime: '2019-04-16 09:52:34',
+                            cancelTime: '2019-04-16T01:52:38.000+0000',
+                            description: '',
+                            childMenus: []
+                        },
+                        {
+                            id: 19,
+                            menuName: '单位管理',
+                            urlPath: 'unit-manage',
+                            imageStroePath: '',
+                            parentId: 2,
+                            orderNumber: 13,
+                            state: true,
+                            createTime: '2019-04-25 09:52:41',
+                            cancelTime: '2019-04-25T01:52:44.000+0000',
+                            description: '',
+                            childMenus: []
+                        }
+                    ]
                 }
             ]
         };

@@ -322,11 +322,18 @@ export default {
             return this.$route.path.replace('/', '');
         }
     },
+    methods:{
+        getRoleMenu(){
+            
+        }
+    },
     created() {
         // 通过 Event Bus 进行组件间通信，来折叠侧边栏
         bus.$on('collapse', msg => {
             this.collapse = msg;
         });
+        //获取当前角色菜单
+        this.getRoleMenu();
     }
 };
 </script>

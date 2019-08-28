@@ -2,6 +2,7 @@ import axios from 'axios';
 import qs from 'Qs';
 import { Message, MessageBox } from 'element-ui';
 import router from '../router/index';
+import {baseUrl} from './baseUrl';
 const headers = {
     www: 'application/x-www-form-urlencoded;charset=UTF-8',
     json: 'application/json;charset=UTF-8',
@@ -9,9 +10,7 @@ const headers = {
 };
 const service = axios.create({
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
-    // baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    // baseURL: 'https://www.apollo-wms.com',
-    baseURL: 'http://localhost:16443',
+    baseURL: baseUrl,
     timeout: 5000
 })
 

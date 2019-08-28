@@ -10,7 +10,7 @@
             unique-opened
             router
         >
-            <template v-for="item in menu">
+            <!-- <template v-for="item in menu">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -42,6 +42,45 @@
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon"></i>
                         <span slot="title">{{ item.title }}</span>
+                    </el-menu-item>
+                </template>
+            </template>-->
+            <template v-for="item in menus">
+                <template v-if="item.childMenus.length > 0">
+                    <el-submenu :index="item.urlPath" :key="item.urlPath">
+                        <template slot="title">
+                            <template v-show="item.imageStroePath">
+                                <i :class="item.imageStroePath"></i>
+                            </template>
+                            <span slot="title">{{ item.menuName }}</span>
+                        </template>
+                        <template v-for="subItem in item.childMenus">
+                            <el-submenu
+                                v-if="subItem.childMenus.length > 0"
+                                :index="subItem.urlPath"
+                                :key="subItem.urlPath"
+                            >
+                                <template slot="title">{{ subItem.menuName }}</template>
+                                <el-menu-item
+                                    v-for="(threeItem,i) in subItem.childMenus"
+                                    :key="i"
+                                    :index="threeItem.urlPath"
+                                >{{ threeItem.menuName }}</el-menu-item>
+                            </el-submenu>
+                            <el-menu-item
+                                v-else
+                                :index="subItem.urlPath"
+                                :key="subItem.urlPath"
+                            >{{ subItem.menuName }}</el-menu-item>
+                        </template>
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="item.urlPath" :key="item.urlPath">
+                        <template v-show="item.imageStroePath">
+                            <i :class="item.imageStroePath"></i>
+                        </template>
+                        <span slot="title">{{ item.menuName }}</span>
                     </el-menu-item>
                 </template>
             </template>
@@ -155,12 +194,12 @@ export default {
                     title: '支持作者'
                 }
             ],
-            items: [
+            menus: [
                 {
                     id: 1,
                     menuName: '系统设置',
-                    urlPath: 'admin',
-                    imageStroePath: 'ww',
+                    urlPath: 'system',
+                    imageStroePath: 'el-icon-lx-home',
                     parentId: 0,
                     orderNumber: 0,
                     state: true,
@@ -172,7 +211,7 @@ export default {
                             id: 5,
                             menuName: '企业角色',
                             urlPath: 'companyRole-manage',
-                            imageStroePath: 'w',
+                            imageStroePath: 'el-icon-lx-home',
                             parentId: 1,
                             orderNumber: 0,
                             state: true,
@@ -185,7 +224,7 @@ export default {
                             id: 6,
                             menuName: '企业管理',
                             urlPath: 'company-manage',
-                            imageStroePath: 's',
+                            imageStroePath: 'el-icon-lx-home',
                             parentId: 1,
                             orderNumber: 0,
                             state: true,
@@ -225,8 +264,8 @@ export default {
                 {
                     id: 2,
                     menuName: '业务设置',
-                    urlPath: 'admin',
-                    imageStroePath: 'f',
+                    urlPath: 'business',
+                    imageStroePath: 'el-icon-lx-home',
                     parentId: 0,
                     orderNumber: 1,
                     state: true,

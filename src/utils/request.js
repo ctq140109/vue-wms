@@ -35,7 +35,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
     if (response.status === 200) {
         console.log('请求成功',response.data.meta.success);
-        // response.data数据结构{meta:{},data:''}
+        // response.data数据结构{meta:{},data:[]}
         if (response.data.meta.success == false) {//拦截判断
             console.log(response.data.meta.code);
             switch (response.data.meta.code) {

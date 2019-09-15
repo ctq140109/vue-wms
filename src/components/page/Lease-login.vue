@@ -2,14 +2,14 @@
     <section>
         <div class="full-page-bg">
             <h1>斑马酒仓WMS管理系统</h1>
-            <h4 @click="toLease">前往租户登录</h4>
+            <h4 @click="toLogin">前往运营登录</h4>
         </div>
         <div class="containers">
             <div class="left-logo">
                 <img src="../../assets/logo/200-200.png" alt />
             </div>
             <div id="login-box">
-                <div class="login-header">用户登录</div>
+                <div class="login-header">租户登录</div>
                 <el-form
                     :model="param"
                     :rules="rules"
@@ -33,23 +33,8 @@
                             <el-button slot="prepend" icon="el-icon-key"></el-button>
                         </el-input>
                     </el-form-item>
-                    <el-form-item prop="companyRoleId">
-                        <el-select v-model="param.companyRoleId" clearable placeholder="请选择角色">
-                            <el-option
-                                v-for="item in roleList"
-                                :key="item.id"
-                                :label="item.companyRoleName"
-                                :value="item.id"
-                            ></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item class="login-btn">
-                        <el-button
-                            type="primary"
-                            native-type="submit"
-                            v-loading="loading"
-                            @click="submitForm"
-                        >登录</el-button>
+                        <el-button type="success" native-type="submit" v-loading="loading" @click="submitForm">登录</el-button>
                     </el-form-item>
                 </el-form>
                 <div class="login-footer">
@@ -69,12 +54,11 @@ export default {
     data: function() {
         return {
             loading: false,
-            roleList: [], //用户角色列表
             param: {
                 account: '',
                 password: '',
                 code: '',
-                companyRoleId: ''
+                companyRoleId: 3
             },
             rules: {
                 account: [
@@ -85,8 +69,7 @@ export default {
                     { required: true, message: '密码不能为空', trigger: 'blur' },
                     { pattern: /^[a-zA-Z0-9]{6,20}$/, message: '密码格式：6到20位（字母或数字）' }
                 ],
-                code: [{ required: true, message: '企业标识码不能为空', trigger: 'blur' }],
-                companyRoleId: [{ required: true, message: '请选择角色', trigger: 'blur' }]
+                code: [{ required: true, message: '企业标识码不能为空', trigger: 'blur' }]
             }
         };
     },
@@ -118,20 +101,11 @@ export default {
                 }
             });
         },
-        toLease() {
-            this.$router.push('/lease-login');
+        toLogin() {
+            this.$router.push('/login');
         }
     },
-    mounted() {
-        getRoles({})
-            .then(res => {
-                console.log('角色列表', res);
-                this.roleList = res;
-            })
-            .catch(err => {
-                console.log('获取失败', err);
-            });
-    }
+    mounted() {}
 };
 </script>
 
@@ -140,8 +114,7 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #fff url('../../assets/logo/bg5.jpg') no-repeat;
-    background-size: 100% 100%;
+    background: #fff url('../../assets/logo/backgroud.png') 50% 50% no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,7 +156,8 @@ export default {
     width: 50%;
     height: 100%;
     float: left;
-    background: rgb(24, 144, 255);
+    /* background: rgb(24, 144, 255); */
+    background: rgba(61, 187, 43, 1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,7 +176,7 @@ export default {
 .login-header {
     height: 40px;
     line-height: 40px;
-    color: rgb(24, 144, 255);
+    color: rgba(61, 187, 43, 1);
     font-size: 20px;
 }
 .login-footer {
@@ -211,9 +185,9 @@ export default {
     color: gray;
 }
 .login-form {
-    padding: 20px 50px;
+    padding: 50px;
     width: calc(100% - 100px);
-    height: calc(100% - 120px);
+    height: calc(100% - 180px);
 }
 .el-form-item {
     margin-bottom: 30px !important;

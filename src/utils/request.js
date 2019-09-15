@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'Qs';
 import { Message, MessageBox } from 'element-ui';
 import router from '../router/index';
-import {baseUrl} from './baseUrl';
+import { baseUrl } from './baseUrl';
 const headers = {
     www: 'application/x-www-form-urlencoded;charset=UTF-8',
     json: 'application/json;charset=UTF-8',
@@ -33,8 +33,9 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use(response => {
+    console.log('请求结果', response);
     if (response.status === 200) {
-        console.log('请求成功',response.data.meta.success);
+        console.log('请求成功', response.data.meta.success);
         // response.data数据结构{meta:{},data:[]}
         if (response.data.meta.success == false) {//拦截判断
             console.log(response.data.meta.code);
@@ -69,13 +70,26 @@ service.interceptors.response.use(response => {
     }
 }, error => {
     console.log(error.response);
-    switch (error.response.status) {//http状态码拦截提示
-        case 404:
-            Message.error('链接找不到了！');
-            break;
-        default:
-            Message.error('服务器繁忙请稍后重试！');
-            break;
+    //接受后台抛出的错误信息
+    //根据error.response.meta判断是否需要拦截抛出的信息
+    if (error.response.data.meta) {//存在meta，抛出meta内的提示信息
+        switch (error.response.data.meta.code) {//根据code拦截
+            case '600'://登录错误信息
+                Message.warning(error.response.data.meta.message);
+                break;
+            default:
+                Message.error('服务器繁忙请稍后重试！');
+                break;
+        }
+    } else {//不存在meta,做统一拦截处理
+        switch (error.response.status) {//http状态码拦截提示
+            case 404:
+                Message.error('链接找不到了！');
+                break;
+            default:
+                Message.error('服务器繁忙请稍后重试！');
+                break;
+        }
     }
     return Promise.reject();
 })

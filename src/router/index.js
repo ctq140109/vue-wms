@@ -16,11 +16,6 @@ export default new Router({
             meta: { title: '自述文件' },
             children: [
                 {
-                    path: '/test',
-                    component: () => import(/* webpackChunkName: "test" */ '../components/page/test.vue'),
-                    meta: { title: '测试页' }
-                },
-                {
                     path: '/dashboard',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '系统首页' }
@@ -113,7 +108,12 @@ export default new Router({
         {
             path: '/login',
             component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
-            meta: { title: '系统登录' }
+            meta: { title: '运营登录' }
+        },
+        {
+            path: '/lease-login',
+            component: () => import(/* webpackChunkName: "login" */ '../components/page/Lease-login.vue'),
+            meta: { title: '租户登录' }
         },
         {
             path: '*',

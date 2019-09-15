@@ -10,7 +10,7 @@
             unique-opened
             router
         >
-            <!-- <template v-for="item in menu">
+            <template v-for="item in menu">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -44,8 +44,8 @@
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
-            </template>-->
-            <template v-for="item in menus">
+            </template>
+            <!-- <template v-for="item in menus">
                 <template v-if="item.childMenus.length > 0">
                     <el-submenu :index="item.urlPath" :key="item.urlPath">
                         <template slot="title">
@@ -83,7 +83,7 @@
                         <span slot="title">{{ item.menuName }}</span>
                     </el-menu-item>
                 </template>
-            </template>
+            </template> -->
         </el-menu>
     </div>
 </template>

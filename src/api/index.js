@@ -5,7 +5,7 @@ export const getRoles = (query) => {
         url: '/ApolloManagement/companyRole/findCompanyRole',
         method: 'post',
         data: query,
-        type:'json'
+        type: 'json'
     })
 }
 //获取公司类型
@@ -13,8 +13,7 @@ export const getCompanyType = (query) => {
     return request({
         url: '/ApolloManagement/company/getCompanyType',
         method: 'get',
-        data: query,
-        type:'www'
+        data: query
     })
 }
 //登录
@@ -23,7 +22,7 @@ export const login = (query) => {
         url: '/ApolloManagement/login/loginUser',
         method: 'post',
         data: query,
-        type:'www'
+        type: 'www'
     })
 }
 //退出登录
@@ -31,7 +30,6 @@ export const loginOut = (query) => {
     return request({
         url: '/ApolloManagement/login/loginOut',
         method: 'get',
-        data: query,
-        type:'www'
+        data: query
     })
 }

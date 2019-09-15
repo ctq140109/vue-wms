@@ -15,7 +15,17 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-    // console.log(config);
+    console.log(config);
+    //拦截get请求参数
+    switch (config.method) {
+        case 'get':
+            if (config.url.indexOf('?') === -1) {
+                config.url += '?' + qs.stringify(config.data);
+            }
+            break;
+        case 'post': break;
+        default: break;
+    }
     //拦截设置请求头
     switch (config.type) {
         case 'json': config.headers["Content-Type"] = headers.json; break;

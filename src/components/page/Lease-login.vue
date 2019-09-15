@@ -34,7 +34,12 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item class="login-btn">
-                        <el-button type="success" native-type="submit" v-loading="loading" @click="submitForm">登录</el-button>
+                        <el-button
+                            type="success"
+                            native-type="submit"
+                            v-loading="loading"
+                            @click="submitForm"
+                        >登录</el-button>
                     </el-form-item>
                 </el-form>
                 <div class="login-footer">
@@ -81,10 +86,11 @@ export default {
                     let param = Object.assign(this.param);
                     login(param)
                         .then(data => {
-                            getCompanyType()
+                            console.log(data.user.companyId);
+                            getCompanyType({ id: data.user.companyId })
                                 .then(res => {
-                                    console.log(res);
                                     this.$message.success('登录成功');
+                                    data.user.type = res.type;
                                     sessionStorage.setItem('bm_user', JSON.stringify(data.user));
                                     sessionStorage.setItem('bm_menu', JSON.stringify(data.menu));
                                     sessionStorage.setItem('bm_roleId', JSON.stringify(data.roleId));

@@ -98,10 +98,12 @@ export default {
                     let param = Object.assign(this.param);
                     login(param)
                         .then(data => {
-                            getCompanyType()
+                            console.log(data.user.companyId);
+                            getCompanyType({ id: data.user.companyId })
                                 .then(res => {
-                                    console.log(res);
+                                    console.log('公司类型', res);
                                     this.$message.success('登录成功');
+                                    data.user.type = res.type;
                                     sessionStorage.setItem('bm_user', JSON.stringify(data.user));
                                     sessionStorage.setItem('bm_menu', JSON.stringify(data.menu));
                                     sessionStorage.setItem('bm_roleId', JSON.stringify(data.roleId));
@@ -126,6 +128,7 @@ export default {
         getRoles({})
             .then(res => {
                 console.log('角色列表', res);
+                res.splice(res.findIndex(v => v.id == 3), 1); //去除租户角色
                 this.roleList = res;
             })
             .catch(err => {

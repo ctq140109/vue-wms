@@ -70,10 +70,13 @@ export default {
             if (command == 'loginout') {
                 loginOut()
                     .then(data => {
+                        let bm_roleId = JSON.parse(sessionStorage.getItem('bm_roleId'));
                         sessionStorage.removeItem('bm_user');
                         sessionStorage.removeItem('bm_menu');
                         sessionStorage.removeItem('bm_roleId');
-                        this.$router.push('/login');
+                        console.log(bm_roleId);
+                        let path = bm_roleId == 3?'/lease-login':'/login';
+                        this.$router.push(path);
                     })
                     .catch(err => {});
             }else if(command == 'changePass'){

@@ -26,28 +26,42 @@ const i18n = new VueI18n({
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | apollo-wms`;
-    const role = sessionStorage.getItem('bm_user');
-    if (!role && to.path !== '/login') {
-        console.log('未登录');
-        next('/login');
-    }
-    // else if (to.meta.permission) {
-    //     // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-    //     role === 'admin' ? next() : next('/403');
-    // } 
-    else {
-        next();
-        // // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
-        // if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
-        //     Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
-        //         confirmButtonText: '确定'
-        //     });
-        // } else {
-        //     next();
-        // }
+    let isLogin = sessionStorage.getItem('bm_user');
+    console.log(to.path);
+    if (to.path === '/login' || to.path === '/lease-login') {
+        // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
+        if (isLogin) {
+            next({ path: '/' })
+        } else {
+            next()
+        }
+    } else {
+        // 如果访问非登录界面，且户会话信息不存在，代表未登录，则跳转到登录界面
+        if (!isLogin) {
+            next({ path: '/login' })
+        } else {
+            // 加载动态菜单和路由
+            // addDynamicMenuAndRoutes()
+            next()
+        }
     }
 });
-
+/**
+* 加载动态菜单和路由
+*/
+function addDynamicMenuAndRoutes() {
+    api.menu.findMenuTree()
+        .then((res) => {
+            store.commit('setMenuTree', res.data)
+            // 添加动态路由
+            let dynamicRoutes = addDynamicRoutes(res.data)
+            router.options.routes[0].children = router.options.routes[0].children.concat(dynamicRoutes)
+            router.addRoutes(router.options.routes);
+        })
+        .catch(function (res) {
+            alert(res);
+        });
+}
 new Vue({
     store,
     router,

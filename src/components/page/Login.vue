@@ -125,7 +125,7 @@ export default {
         }
     },
     mounted() {
-        getRoles({})
+        getRoles()
             .then(res => {
                 console.log('角色列表', res);
                 res.splice(res.findIndex(v => v.id == 3), 1); //去除租户角色

@@ -83,7 +83,7 @@
                         <span slot="title">{{ item.menuName }}</span>
                     </el-menu-item>
                 </template>
-            </template> -->
+            </template>-->
         </el-menu>
     </div>
 </template>
@@ -130,10 +130,6 @@ export default {
                                 {
                                     index: 'markdown',
                                     title: 'markdown编辑器'
-                                },
-                                {
-                                    index: 'test',
-                                    title: '测试页'
                                 }
                             ]
                         },
@@ -322,10 +318,62 @@ export default {
             return this.$route.path.replace('/', '');
         }
     },
-    methods:{
-        getRoleMenu(){
-            
-        }
+    methods: {
+        getRoleMenu() {},
+        /**
+         * 添加动态(菜单)路由
+         * @param {*} menuList 菜单列表
+         * @param {*} routes 递归创建的动态(菜单)路由
+         */
+        // addDynamicMenuRoutes(menuList = [], routes = []) {
+        //     var temp = [];
+        //     for (var i = 0; i < menuList.length; i++) {
+        //         if (menuList[i].children && menuList[i].children.length >= 1) {
+        //             temp = temp.concat(menuList[i].children);
+        //         } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
+        //             menuList[i].url = menuList[i].url.replace(/^\//, '');
+        //             // 创建路由配置
+        //             var route = {
+        //                 path: menuList[i].url,
+        //                 component: null,
+        //                 name: menuList[i].name,
+        //                 meta: {
+        //                     menuId: menuList[i].menuId,
+        //                     title: menuList[i].name,
+        //                     isDynamic: true,
+        //                     isTab: true,
+        //                     iframeUrl: ''
+        //                 }
+        //             };
+        //             // url以http[s]://开头, 通过iframe展示
+        //             if (isURL(menuList[i].url)) {
+        //                 route['path'] = menuList[i].url;
+        //                 route['name'] = menuList[i].name;
+        //                 route['meta']['iframeUrl'] = menuList[i].url;
+        //             } else {
+        //                 try {
+        //                     // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
+        //                     // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
+        //                     let array = menuList[i].url.split('/');
+        //                     let url =
+        //                         array[0].substring(0, 1).toUpperCase() +
+        //                         array[0].substring(1) +
+        //                         '/' +
+        //                         array[1].substring(0, 1).toUpperCase() +
+        //                         array[1].substring(1);
+        //                     route['component'] = resolve => require([`@/views/${url}`], resolve);
+        //                 } catch (e) {}
+        //             }
+        //             routes.push(route);
+        //         }
+        //     }
+        //     if (temp.length >= 1) {
+        //         this.addDynamicMenuRoutes(temp, routes);
+        //     } else {
+        //         console.log(routes);
+        //     }
+        //     return routes;
+        // }
     },
     created() {
         // 通过 Event Bus 进行组件间通信，来折叠侧边栏
@@ -334,6 +382,7 @@ export default {
         });
         //获取当前角色菜单
         this.getRoleMenu();
+        console.log(this.$router.options);
     }
 };
 </script>

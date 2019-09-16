@@ -15,16 +15,13 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-    console.log(config);
+    // console.log(config);
+    config.method = config.method || 'get';//默认get请求
+    config.data = config.data || {};//默认无数据
+    config.type = config.type || 'json';//默认请求头json
     //拦截get请求参数
-    switch (config.method) {
-        case 'get':
-            if (config.url.indexOf('?') === -1) {
-                config.url += '?' + qs.stringify(config.data);
-            }
-            break;
-        case 'post': break;
-        default: break;
+    if (config.method === 'get' && config.url.indexOf('?') === -1) {
+        config.url += '?' + qs.stringify(config.data);
     }
     //拦截设置请求头
     switch (config.type) {
@@ -45,7 +42,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
     console.log('请求结果', response);
     if (response.status === 200) {
-        console.log('请求成功', response.data.meta.success);
+        // console.log('请求成功', response.data.meta.success);
         // response.data数据结构{meta:{},data:[]}
         if (response.data.meta.success == false) {//拦截判断
             console.log(response.data.meta.code);
@@ -79,7 +76,7 @@ service.interceptors.response.use(response => {
         return Promise.reject();
     }
 }, error => {
-    console.log(error.response);
+    console.log('请求出错', error.response);
     //接受后台抛出的错误信息
     //根据error.response.meta判断是否需要拦截抛出的信息
     if (error.response.data.meta) {//存在meta，抛出meta内的提示信息
